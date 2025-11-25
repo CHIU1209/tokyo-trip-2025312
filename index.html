@@ -13,6 +13,9 @@
             --bg-color: #f9f7f7;      /* 米白紙張感 */
             --card-bg: #ffffff;
             --text-color: #4a4a4a;
+            --cube-color: #4a90e2;    /* CUBE卡專屬藍 */
+            --jcard-color: #50c878;   /* J卡專屬綠 */
+            --ctbc-color: #00a0a0;    /* 中信專屬青 */
         }
 
         body {
@@ -181,6 +184,7 @@
                 <button class="filter-btn active" onclick="filterData('all')">全部</button>
                 <button class="filter-btn" onclick="filterData('CUBE卡')">CUBE</button>
                 <button class="filter-btn" onclick="filterData('J卡')">J卡</button>
+                <button class="filter-btn" onclick="filterData('中信')">中信</button>
                 <button class="filter-btn" onclick="filterData('台新')">台新</button>
                 <button class="filter-btn" onclick="filterData('凱基')">凱基</button>
                 <button class="filter-btn" onclick="filterData('other')">其他</button>
@@ -193,68 +197,34 @@
 
     <script>
         // ==========================================
-        // 👇 你的 2025 東京快閃之旅 Database
+        // 👇 你的 2025 東京快閃之旅 Database (Full Version)
         // ==========================================
         const tripData = [
-            // --- 事前準備 & 去程 ---
-            { 
-                date: '2025-11-08', 
-                item: 'WaySim eSIM 網卡', 
-                cost: 269, 
-                category: '網路', 
-                icon: '📱',
-                note: '凱基'
-            },
-            { 
-                date: '2025-11-08', 
-                item: '捷星航空來回機票 (GK12/GK11)', 
-                cost: 9190, 
-                category: '交通', 
-                icon: '✈️',
-                note: 'CUBE卡'
-            },
-            { 
-                date: '2025-11-08', 
-                item: '加購託運行李', 
-                cost: 1595, 
-                category: '交通', 
-                icon: '🧳',
-                note: 'CUBE卡'
-            },
-            { 
-                date: '2025-11-08', 
-                item: 'Skyliner 京成電鐵 (4620円)', 
-                cost: 937, 
-                category: '交通', 
-                icon: '🚄',
-                note: '台新'
-            },
-            // --- 住宿 & 娛樂 ---
-            { 
-                date: '2025-11-08', 
-                item: '新宿格蘭貝爾酒店', 
-                cost: 2316, 
-                category: '住宿', 
-                icon: '🏨',
-                note: 'CUBE卡'
-            },
-            { 
-                date: '2025-11-09', 
-                item: '演唱會門票 (15800円)', 
-                cost: 3260, 
-                category: '娛樂', 
-                icon: '🎫',
-                note: 'J卡'
-            },
-            // --- 回程 ---
-            { 
-                date: '2025-11-09', 
-                item: '回程成田 Express (Klook)', 
-                cost: 1310, 
-                category: '交通', 
-                icon: '🚆',
-                note: '凱基'
-            }
+            // --- Day 1: 11/08 (六) ---
+            { date: '2025-11-08', item: 'WaySim eSIM 網卡', cost: 269, category: '網路', icon: '📱', note: '凱基' },
+            { date: '2025-11-08', item: '捷星航空來回機票', cost: 9190, category: '交通', icon: '✈️', note: 'CUBE卡' },
+            { date: '2025-11-08', item: '加購託運行李', cost: 1595, category: '交通', icon: '🧳', note: 'CUBE卡' },
+            { date: '2025-11-08', item: 'Skyliner 京成電鐵', cost: 937, category: '交通', icon: '🚄', note: '台新' },
+            { date: '2025-11-08', item: '新宿格蘭貝爾酒店', cost: 2316, category: '住宿', icon: '🏨', note: 'CUBE卡' },
+            { date: '2025-11-08', item: '勞森 Lawson', cost: 339, category: '飲食', icon: '🏪', note: 'CUBE卡' },
+            { date: '2025-11-08', item: '7-11 超商', cost: 292, category: '飲食', icon: '🏪', note: 'CUBE卡' },
+            { date: '2025-11-08', item: '跑步 (行程/購物)', cost: 622, category: '娛樂', icon: '🏃', note: 'CUBE卡' },
+            { date: '2025-11-08', item: '晚餐：串燒', cost: 955, category: '飲食', icon: '🍢', note: 'CUBE卡' },
+            { date: '2025-11-08', item: '超商咖啡 (439円)', cost: 89, category: '飲食', icon: '☕', note: '中信' },
+
+            // --- Day 2: 11/09 (日) ---
+            { date: '2025-11-09', item: '午餐：壽喜燒', cost: 2360, category: '飲食', icon: '🥘', note: 'CUBE卡' },
+            { date: '2025-11-09', item: '雨傘 (質感好物)', cost: 792, category: '購物', icon: '☂️', note: 'CUBE卡' },
+            { date: '2025-11-09', item: 'Uniqlo 優衣褲', cost: 1416, category: '購物', icon: '👕', note: 'CUBE卡' },
+            { date: '2025-11-09', item: 'GU 服飾', cost: 1660, category: '購物', icon: '👗', note: 'CUBE卡' },
+            { date: '2025-11-09', item: '微波爐神器', cost: 559, category: '購物', icon: '🥣', note: 'CUBE卡' },
+            { date: '2025-11-09', item: '奶昔 (1069円)', cost: 217, category: '飲食', icon: '🥤', note: '中信' },
+            { date: '2025-11-09', item: '星巴克 (671円)', cost: 136, category: '飲食', icon: '☕', note: '中信' },
+            { date: '2025-11-09', item: '車站餅乾 (1080円)', cost: 219, category: '購物', icon: '🍪', note: '中信' },
+            { date: '2025-11-09', item: '演唱會門票 (15800円)', cost: 3260, category: '娛樂', icon: '🎫', note: 'J卡' },
+            { date: '2025-11-09', item: '晚餐：漢堡', cost: 334, category: '飲食', icon: '🍔', note: 'CUBE卡' },
+            { date: '2025-11-09', item: '機場販賣機 (160円)', cost: 32, category: '飲食', icon: '🧃', note: '中信' },
+            { date: '2025-11-09', item: '回程成田 Express (Klook)', cost: 1310, category: '交通', icon: '🚆', note: '凱基' }
         ];
 
         // ==========================================
@@ -273,8 +243,8 @@
             // 1. 更新按鈕樣式
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
-                // 檢查按鈕文字是否包含點擊的類型 (或是特殊處理 '全部')
                 const btnText = btn.innerText;
+                // 處理按鈕文字與篩選關鍵字的對應
                 if (type === 'all' && btnText === '全部') btn.classList.add('active');
                 else if (type === 'other' && btnText === '其他') btn.classList.add('active');
                 else if (btnText.includes(type)) btn.classList.add('active');
@@ -285,8 +255,8 @@
             if (type === 'all') {
                 filteredData = tripData;
             } else if (type === 'other') {
-                // 找出不屬於那四張卡(主要關鍵字)的資料
-                const mainCards = ['CUBE', 'J卡', '台新', '凱基'];
+                // 找出不屬於主要卡別的資料
+                const mainCards = ['CUBE', 'J卡', '台新', '凱基', '中信'];
                 filteredData = tripData.filter(item => !mainCards.some(card => item.note.includes(card)));
             } else {
                 // 找出包含特定卡名的資料
@@ -297,7 +267,7 @@
             renderView(filteredData);
         }
 
-        // 渲染畫面主程式 (清單 + 總計 + 圖表)
+        // 渲染畫面主程式
         function renderView(data) {
             // --- A. 更新總花費 ---
             const total = data.reduce((sum, record) => sum + record.cost, 0);
@@ -316,16 +286,21 @@
                 const li = document.createElement('li');
                 li.className = 'transaction-item';
                 
-                // 根據不同卡別給不同顏色標籤 (Vibe Visuals)
-                let tagColor = '#ff7e67'; // 預設紅 (台新/凱基/其他)
-                if (record.note.includes('CUBE')) tagColor = '#4a90e2'; // 藍
-                if (record.note.includes('J卡')) tagColor = '#50c878';  // 綠
+                // 根據不同卡別給不同顏色標籤 (視覺識別)
+                let tagColor = '#999'; // 預設灰
+                let borderColor = '#ddd';
+                
+                if (record.note.includes('CUBE')) { tagColor = '#4a90e2'; borderColor = '#4a90e2'; } // 藍
+                else if (record.note.includes('J卡')) { tagColor = '#50c878'; borderColor = '#50c878'; } // 綠
+                else if (record.note.includes('台新')) { tagColor = '#e74c3c'; borderColor = '#e74c3c'; } // 紅
+                else if (record.note.includes('凱基')) { tagColor = '#f39c12'; borderColor = '#f39c12'; } // 橘
+                else if (record.note.includes('中信')) { tagColor = '#00a0a0'; borderColor = '#00a0a0'; } // 青綠
                 
                 li.innerHTML = `
                     <div class="item-info">
                         <h3>${record.icon} ${record.item}</h3>
                         <span>${record.date} · ${record.category} 
-                            <span style="color: ${tagColor}; margin-left: 5px; border: 1px solid ${tagColor}; padding: 1px 6px; border-radius: 4px; font-size: 0.7em;">
+                            <span style="color: ${tagColor}; margin-left: 5px; border: 1px solid ${borderColor}; padding: 1px 6px; border-radius: 4px; font-size: 0.7em;">
                                 ${record.note || '現金'}
                             </span>
                         </span>
@@ -347,12 +322,10 @@
 
             const ctx = document.getElementById('expenseChart').getContext('2d');
             
-            // 如果圖表已經存在，要先銷毀才能畫新的
             if (currentChart) {
                 currentChart.destroy();
             }
 
-            // 如果沒有數據，就不畫圖
             if (data.length === 0) return;
 
             currentChart = new Chart(ctx, {
@@ -362,12 +335,13 @@
                     datasets: [{
                         data: Object.values(categories),
                         backgroundColor: [
-                            '#FFB7B2', // 粉紅
-                            '#FFDAC1', // 杏色
-                            '#E2F0CB', // 淺綠
-                            '#B5EAD7', // 薄荷
-                            '#C7CEEA', // 淡紫
-                            '#F0E68C'  // 卡其
+                            '#FFB7B2', // 粉紅 (飲食)
+                            '#FFDAC1', // 杏色 (娛樂)
+                            '#E2F0CB', // 淺綠 (交通)
+                            '#B5EAD7', // 薄荷 (住宿)
+                            '#C7CEEA', // 淡紫 (購物)
+                            '#F0E68C', // 卡其 (網路)
+                            '#e0e0e0'  
                         ],
                         borderWidth: 0
                     }]
