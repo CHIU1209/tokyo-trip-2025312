@@ -1,217 +1,37 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🇯🇵 Japan Trip Recap</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&family=Zen+Maru+Gothic:wght@500&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <style>
-        :root {
-            --primary-color: #ff7e67; /* 日本鳥居紅 */
-            --bg-color: #f9f7f7;      /* 米白紙張感 */
-            --card-bg: #ffffff;
-            --text-color: #4a4a4a;
-        }
-
-        body {
-            font-family: 'Zen Maru Gothic', 'Noto Sans TC', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .container {
-            max-width: 800px;
-            width: 100%;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 40px 0;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin: 0;
-            color: var(--primary-color);
-        }
-
-        p.subtitle {
-            font-size: 1.2rem;
-            color: #888;
-            margin-top: 10px;
-        }
-
-        /* 卡片樣式 */
-        .card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* 柔和陰影 */
-            margin-bottom: 30px;
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .summary-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-box {
-            text-align: center;
-            padding: 20px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-        }
-
-        .stat-number {
-            display: block;
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        /* 列表樣式 */
-        .transaction-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .transaction-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .item-info h3 { margin: 0; font-size: 1.1rem; }
-        .item-info span { font-size: 0.85rem; color: #999; }
-        .item-price { font-weight: bold; color: var(--text-color); }
-
-        /* 響應式調整 */
-        @media (max-width: 600px) {
-            .summary-grid { grid-template-columns: 1fr; }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <header>
-            <h1>🇯🇵 日本之旅回顧</h1>
-            <p class="subtitle">2025 Tokyo & Kyoto Vibe Check</p>
-        </header>
-
-        <div class="summary-grid">
-            <div class="stat-box">
-                <span>總花費 (TWD)</span>
-                <span class="stat-number" id="total-spent">0</span>
-            </div>
-            <div class="stat-box">
-                <span>紀錄筆數</span>
-                <span class="stat-number" id="total-items">0</span>
-            </div>
-        </div>
-
-        <div class="card">
-            <h2>💸 錢錢去哪了？ (類別分析)</h2>
-            <canvas id="expenseChart"></canvas>
-        </div>
-
-        <div class="card">
-            <h2>📝 旅行足跡與帳單</h2>
-            <ul class="transaction-list" id="list-container">
-                </ul>
-        </div>
-    </div>
-
-    <script>
-        // ==========================================
-        // 👇 在這裡輸入你的記帳資料 (Vibe Coding Area)
+// ==========================================
+        // 👇 你的 2025 東京快閃之旅 Database
         // ==========================================
         const tripData = [
-            { date: '2025-11-20', item: '一蘭拉麵', cost: 280, category: '飲食', icon: '🍜' },
-            { date: '2025-11-20', item: '成田特快 N\'EX', cost: 900, category: '交通', icon: '🚄' },
-            { date: '2025-11-21', item: '環球影城門票', cost: 2500, category: '娛樂', icon: '🎢' },
-            { date: '2025-11-21', item: '瑪利歐賽車帽', cost: 800, category: '購物', icon: '🧢' },
-            { date: '2025-11-22', item: '便利商店宵夜', cost: 150, category: '飲食', icon: '🍙' },
-            { date: '2025-11-23', item: '伴手禮 (菓子)', cost: 3000, category: '購物', icon: '🎁' },
-            { date: '2025-11-23', item: '回程機票補貼', cost: 1500, category: '交通', icon: '✈️' },
-        ];
-
-        // ==========================================
-        // 👇 下面是邏輯處理 (不用動，除非你想改功能)
-        // ==========================================
-
-        // 1. 計算總花費
-        const total = tripData.reduce((sum, record) => sum + record.cost, 0);
-        document.getElementById('total-spent').innerText = `$${total.toLocaleString()}`;
-        document.getElementById('total-items').innerText = tripData.length;
-
-        // 2. 渲染列表
-        const listContainer = document.getElementById('list-container');
-        tripData.forEach(record => {
-            const li = document.createElement('li');
-            li.className = 'transaction-item';
-            li.innerHTML = `
-                <div class="item-info">
-                    <h3>${record.icon} ${record.item}</h3>
-                    <span>${record.date} · ${record.category}</span>
-                </div>
-                <div class="item-price">$${record.cost.toLocaleString()}</div>
-            `;
-            listContainer.appendChild(li);
-        });
-
-        // 3. 準備圖表數據 (依類別加總)
-        const categories = {};
-        tripData.forEach(record => {
-            if (categories[record.category]) {
-                categories[record.category] += record.cost;
-            } else {
-                categories[record.category] = record.cost;
-            }
-        });
-
-        // 4. 繪製圖表 (Chart.js)
-        const ctx = document.getElementById('expenseChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'doughnut', // 甜甜圈圖
-            data: {
-                labels: Object.keys(categories),
-                datasets: [{
-                    data: Object.values(categories),
-                    backgroundColor: [
-                        '#FFB7B2', // 粉紅
-                        '#FFDAC1', // 杏色
-                        '#E2F0CB', // 淺綠
-                        '#B5EAD7', // 薄荷
-                        '#C7CEEA'  // 淡紫
-                    ],
-                    borderWidth: 0
-                }]
+            { 
+                date: '2025-11-08', 
+                item: '捷星航空來回機票 (GK12/GK11)', 
+                cost: 9190, 
+                category: '交通', 
+                icon: '✈️',
+                note: 'CUBE卡'
             },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { position: 'bottom' }
-                }
+            { 
+                date: '2025-11-08', 
+                item: '加購託運行李', 
+                cost: 1595, 
+                category: '交通', 
+                icon: '🧳',
+                note: 'CUBE卡'
+            },
+            { 
+                date: '2025-11-08', 
+                item: '新宿格蘭貝爾酒店', 
+                cost: 2316, 
+                category: '住宿', 
+                icon: '🏨',
+                note: 'CUBE卡'
+            },
+            { 
+                date: '2025-11-09', 
+                item: '演唱會門票 (15800円)', 
+                cost: 3260, 
+                category: '娛樂', 
+                icon: '🎫',
+                note: 'J卡'
             }
-        });
-    </script>
-</body>
-</html>
+        ];
