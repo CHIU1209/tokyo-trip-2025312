@@ -195,7 +195,7 @@
             li.innerHTML = `
                 <div class="item-info">
                     <h3>${record.icon} ${record.item}</h3>
-                    <span>${record.date} · ${record.category}</span>
+                    <span>${record.date} · ${record.category} <span style="color: #ff7e67; margin-left: 5px; border: 1px solid #ff7e67; padding: 0 4px; border-radius: 4px; font-size: 0.7em;">${record.note}</span></span>
                 </div>
                 <div class="item-price">$${record.cost.toLocaleString()}</div>
             `;
